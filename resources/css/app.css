@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@keyframes fadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-up {
+    animation: fadeUp 1.2s ease forwards;
+}
+
+.fade-up-delay-1 {
+    animation: fadeUp 1.2s ease forwards;
+    animation-delay: 0.3s;
+}
+
+.fade-up-delay-2 {
+    animation: fadeUp 1.2s ease forwards;
+    animation-delay: 0.6s;
+}
+
+@keyframes revealUp {
+    0% {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reveal {
+    opacity: 0;
+}
+
+.reveal-active {
+    animation: revealUp 1s ease forwards;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+.fade-title {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.fade-title.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.spec-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 24px;
+    border-radius: 18px;
+    transition: all 0.5s ease;
+    backdrop-filter: blur(10px);
+}
+
+.spec-card:hover {
+    border-color: rgba(234,179,8,0.7);
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(234,179,8,0.15);
+}
+
+.spec-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 6px;
+}
+
+.spec-value {
+    font-size: 18px;
+    font-weight: 500;
+    color: white;
+}
+.trust-card {
+    padding: 40px 30px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    transition: all 0.4s ease;
+}
+
+.trust-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(234,179,8,0.7);
+    box-shadow: 0 15px 40px rgba(234,179,8,0.15);
+}
+@keyframes loader {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.animate-loader {
+    animation: loader 1.2s ease-in-out forwards;
+}
+.form-input {
+    width: 100%;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: rgba(234,179,8,0.7);
+    box-shadow: 0 0 0 2px rgba(234,179,8,0.15);
+}
+.form-input {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 14px 16px;
+    border-radius: 12px;
+    color: white;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: rgba(234,179,8,0.6);
+    box-shadow: 0 0 0 2px rgba(234,179,8,0.15);
+}
+

@@ -1,6 +1,5 @@
 FROM php:8.2-apache
 
-# Install dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -10,32 +9,26 @@ RUN apt-get update && apt-get install -y \
     npm \
     && docker-php-ext-install pdo pdo_pgsql
 
-# Enable Apache rewrite
 RUN a2enmod rewrite
-
-# Allow .htaccess overrides
 RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
-# Set working directory
 WORKDIR /var/www/html
-
-# Copy project
 COPY . .
 
-# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN composer install --no-dev --optimize-autoloader
-
-# Build frontend
 RUN npm install
 RUN npm run build
 
-# Set correct document root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
-    /etc/apache2/sites-available/*.conf \
-    /etc/apache2/apache2.conf \
-    /etc/apache2/conf-available/*.conf
+    /etc/apache2/sites-available/000-default.conf
+
+# Make Apache listen on Render port
+RUN sed -i 's/80/${PORT}/g' /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
+
+EXPOSE 10000
 
 CMD php artisan migrate --force && apache2-foreground

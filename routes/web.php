@@ -6,7 +6,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestDriveController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [CarController::class, 'home'])->name('home');
+Route::get('/', function () {
+    return 'ROOT WORKING';
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');

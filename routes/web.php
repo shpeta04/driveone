@@ -39,3 +39,6 @@ Route::get('/contact', [CarController::class, 'contact'])
 Route::post('/contact', [CarController::class, 'contactSubmit'])
     ->name('contact.submit');
 require __DIR__.'/auth.php';
+Route::get('/test', function () {
+    return 'WORKING';
+});

@@ -63,48 +63,93 @@
 
 {{-- NAVBAR --}}
 <nav
-    x-data="{ scrolled: false }"
-    x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 50 })"
+    x-data="{ open:false, scrolled:false }"
+    x-init="window.addEventListener('scroll', () => scrolled = window.scrollY > 50)"
     :class="scrolled
         ? 'bg-black shadow-lg border-b border-gray-800'
         : 'bg-transparent'"
     class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
 
-    <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+    <div class="max-w-7xl mx-auto px-6 py-5">
 
-        <a href="/"
-           @click.prevent="
-    window.dispatchEvent(new Event('page-leave'));
-    setTimeout(() => window.location = $el.href, 300);
-"
+        <div class="flex items-center justify-between">
 
-           class="text-2xl font-bold tracking-wide text-white">
-            DRIVE<span class="text-yellow-500">ONE</span>
-        </a>
+            {{-- LOGO --}}
+            <a href="{{ route('home') }}"
+               class="text-2xl font-bold tracking-wide text-white">
+                DRIVE<span class="text-yellow-500">ONE</span>
+            </a>
 
-        <div class="space-x-8 text-sm uppercase tracking-wider text-white">
-            <a href="/"
-               @click.prevent="
-    window.dispatchEvent(new Event('page-leave'));
-    setTimeout(() => window.location = $el.href, 300);
-" class="hover:text-yellow-500 transition">
+            {{-- DESKTOP MENU --}}
+            <div class="hidden md:flex space-x-8 text-sm uppercase tracking-wider text-white">
+
+                <a href="{{ route('home') }}"
+                   class="hover:text-yellow-500 transition">
+                    Home
+                </a>
+
+                <a href="{{ route('cars.index') }}"
+                   class="hover:text-yellow-500 transition">
+                    Inventory
+                </a>
+
+                <a href="{{ route('contact') }}"
+                   class="hover:text-yellow-500 transition">
+                    Contact
+                </a>
+
+            </div>
+
+            {{-- MOBILE BUTTON --}}
+            <button
+                @click="open = !open"
+                class="md:hidden text-white focus:outline-none">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="w-7 h-7"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M4 6h16M4 12h16M4 18h16" />
+
+                </svg>
+
+            </button>
+
+        </div>
+
+        {{-- MOBILE MENU --}}
+        <div
+            x-show="open"
+            x-transition
+            @click.away="open = false"
+            class="md:hidden mt-6 space-y-4 text-center text-white uppercase tracking-wider">
+
+            <a href="{{ route('home') }}"
+               class="block hover:text-yellow-500 transition">
                 Home
             </a>
-            <a href="{{ route('cars.index') }}"
-               @click.prevent="
-    window.dispatchEvent(new Event('page-leave'));
-    setTimeout(() => window.location = $el.href, 300);
-" class="hover:text-yellow-500 transition">Inventory</a>
 
-            <a href="{{route('contact')}}"
-               @click.prevent="
-    window.dispatchEvent(new Event('page-leave'));
-    setTimeout(() => window.location = $el.href, 300);
-" class="hover:text-yellow-500 transition">Contact</a>
+            <a href="{{ route('cars.index') }}"
+               class="block hover:text-yellow-500 transition">
+                Inventory
+            </a>
+
+            <a href="{{ route('contact') }}"
+               class="block hover:text-yellow-500 transition">
+                Contact
+            </a>
+
         </div>
 
     </div>
+
 </nav>
+
 
 <main
     x-data="{ show: false }"

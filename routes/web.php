@@ -29,9 +29,9 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
     Route::resource('cars',AdminCarController::class);
 
     Route::delete(
-        '/admin/car-images/{image}',
+        '/car-images/{image}',
         [AdminCarController::class, 'deleteImage']
-    )->name('admin.car-images.delete');
+    )->name('car-images.delete');
 
 });
 

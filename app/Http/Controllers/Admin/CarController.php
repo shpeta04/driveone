@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Car;
 use App\Models\CarImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CarController extends Controller
@@ -85,6 +86,8 @@ class CarController extends Controller
      */
     public function edit(Car $car)
     {
+        $car->load('images');
+
         return view('admin.cars.edit', compact('car'));
     }
 
@@ -93,23 +96,41 @@ class CarController extends Controller
      */
     public function update(Request $request, Car $car)
     {
-        $data = $request->validate([
-            'title' => 'required|string',
-            'brand' => 'required|string',
-            'model' => 'required|string',
-            'year' => 'nullable|integer',
-            'mileage' => 'nullable|integer',
-            'fuel_type' => 'required',
-            'transmission' => 'required',
-            'price' => 'required|numeric',
-            'description' => 'nullable|string',
-            'is_sold' => 'nullable|boolean',
+        $request->validate([
+            'title' => 'required',
+            'brand' => 'required',
+            'model' => 'required',
+            'year' => 'required',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp'
         ]);
-        $data['slug'] = Str::slug($data['title']) . '-' . $car->id;
-        $car->update($data);
-        return redirect()->route('admin.cars.index')
-            ->with('success', 'Car updated successfully');
+
+        $car->update([
+            'title' => $request->title,
+            'brand' => $request->brand,
+            'model' => $request->model,
+            'year' => $request->year,
+            'mileage' => $request->mileage,
+            'fuel_type' => $request->fuel_type,
+            'transmission' => $request->transmission,
+        ]);
+
+        // Upload new images
+        if ($request->hasFile('images')) {
+
+            foreach ($request->file('images') as $file) {
+
+                $path = $file->store('cars', 'public');
+
+                CarImage::create([
+                    'car_id' => $car->id,
+                    'image' => $path
+                ]);
+            }
+        }
+
+        return back()->with('success', 'Car updated successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -120,4 +141,13 @@ class CarController extends Controller
         return redirect()->route('admin.cars.index')
             ->with('success', 'Car deleted successfully');
     }
+    public function deleteImage(CarImage $image)
+    {
+        Storage::disk('public')->delete($image->image);
+
+        $image->delete();
+
+        return back()->with('success', 'Image deleted');
+    }
+
 }

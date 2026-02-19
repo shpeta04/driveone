@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Car;
+use App\Models\CarImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -31,24 +32,45 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'title' => 'required|string',
-            'brand' => 'required|string',
-            'model' => 'required|string',
-            'year' => 'nullable|integer',
-            'mileage' => 'nullable|integer',
-            'fuel_type' => 'required',
-            'transmission' => 'required',
-            'price' => 'required|numeric',
-            'description' => 'nullable|string',
+        $request->validate([
+            'title' => 'required',
+            'brand' => 'required',
+            'model' => 'required',
+            'year' => 'required',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp'
         ]);
-        $data['slug'] = Str::slug($data['title']) . '-' . uniqid();
 
-        Car::create($data);
+        $car = Car::create([
+            'title' => $request->title,
+            'brand' => $request->brand,
+            'model' => $request->model,
+            'year' => $request->year,
+            'mileage' => $request->mileage,
+            'fuel_type' => $request->fuel_type,
+            'transmission' => $request->transmission,
+            'slug' => Str::slug($request->brand.'-'.$request->model.'-'.uniqid()),
+        ]);
 
-        return redirect()->route('admin.cars.index')
-            ->with('success', 'Car added successfully');
+        // Save images
+        if ($request->hasFile('images')) {
+
+            foreach ($request->file('images') as $file) {
+
+                $path = $file->store('cars', 'public');
+
+                CarImage::create([
+                    'car_id' => $car->id,
+                    'image' => $path
+                ]);
+            }
+
+        }
+
+        return redirect()
+            ->route('admin.cars.index')
+            ->with('success', 'Car created successfully');
     }
+
 
     /**
      * Display the specified resource.

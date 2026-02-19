@@ -26,7 +26,7 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
         return view('admin.dashboard');
     })->name('dashboard');
 
-    Route::resource('cars',CarController::class);
+    Route::resource('cars',AdminCarController::class);
 });
 
 

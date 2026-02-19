@@ -31,7 +31,7 @@
 
         <div class="text-3xl tracking-widest text-white mb-6"
              style="font-family: 'Playfair Display', serif;">
-            DRIVE<span class="text-yellow-500">ONE</span>
+            DRIVE<span class="text-yellow-500">ONE1</span>
         </div>
 
         <div class="w-40 h-[2px] bg-white/10 relative overflow-hidden mx-auto">

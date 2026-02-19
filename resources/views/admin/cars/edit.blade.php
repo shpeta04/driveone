@@ -1,70 +1,102 @@
-<x-app-layout>
-    <div class="max-w-4xl mx-auto py-8">
-        <h1 class="text-2xl font-bold mb-6">Edit Car</h1>
+@extends('admin.layout')
+
+@section('content')
+
+    <div class="max-w-5xl mx-auto py-10">
+
+        <h1 class="text-3xl font-bold mb-8">Edit Vehicle</h1>
 
         <form method="POST"
               action="{{ route('admin.cars.update', $car) }}"
-              class="bg-white p-6 rounded shadow space-y-4">
+              enctype="multipart/form-data"
+              class="space-y-6">
+
             @csrf
             @method('PUT')
 
-            <input name="title"
-                   value="{{ old('title', $car->title) }}"
-                   class="w-full border p-2"
-                   required>
+            <input type="text"
+                   name="title"
+                   value="{{ $car->title }}"
+                   class="form-input w-full">
 
-            <input name="brand"
-                   value="{{ old('brand', $car->brand) }}"
-                   class="w-full border p-2"
-                   required>
+            <input type="text"
+                   name="brand"
+                   value="{{ $car->brand }}"
+                   class="form-input w-full">
 
-            <input name="model"
-                   value="{{ old('model', $car->model) }}"
-                   class="w-full border p-2"
-                   required>
+            <input type="text"
+                   name="model"
+                   value="{{ $car->model }}"
+                   class="form-input w-full">
 
             <input type="number"
                    name="year"
-                   value="{{ old('year', $car->year) }}"
-                   class="w-full border p-2">
+                   value="{{ $car->year }}"
+                   class="form-input w-full">
 
             <input type="number"
                    name="mileage"
-                   value="{{ old('mileage', $car->mileage) }}"
-                   class="w-full border p-2">
+                   value="{{ $car->mileage }}"
+                   class="form-input w-full">
 
-            <select name="fuel_type" class="w-full border p-2">
-                <option value="petrol" {{ $car->fuel_type == 'petrol' ? 'selected' : '' }}>Petrol</option>
-                <option value="diesel" {{ $car->fuel_type == 'diesel' ? 'selected' : '' }}>Diesel</option>
-                <option value="electric" {{ $car->fuel_type == 'electric' ? 'selected' : '' }}>Electric</option>
-                <option value="hybrid" {{ $car->fuel_type == 'hybrid' ? 'selected' : '' }}>Hybrid</option>
+            <select name="fuel_type" class="form-input w-full">
+                <option {{ $car->fuel_type == 'petrol' ? 'selected':'' }}>petrol</option>
+                <option {{ $car->fuel_type == 'diesel' ? 'selected':'' }}>diesel</option>
+                <option {{ $car->fuel_type == 'electric' ? 'selected':'' }}>electric</option>
+                <option {{ $car->fuel_type == 'hybrid' ? 'selected':'' }}>hybrid</option>
             </select>
 
-            <select name="transmission" class="w-full border p-2">
-                <option value="manual" {{ $car->transmission == 'manual' ? 'selected' : '' }}>Manual</option>
-                <option value="automatic" {{ $car->transmission == 'automatic' ? 'selected' : '' }}>Automatic</option>
+            <select name="transmission" class="form-input w-full">
+                <option {{ $car->transmission == 'automatic' ? 'selected':'' }}>automatic</option>
+                <option {{ $car->transmission == 'manual' ? 'selected':'' }}>manual</option>
             </select>
 
-            <input type="number"
-                   step="0.01"
-                   name="price"
-                   value="{{ old('price', $car->price) }}"
-                   class="w-full border p-2">
+            <div>
+                <label>Add New Images</label>
 
-            <textarea name="description"
-                      class="w-full border p-2">{{ old('description', $car->description) }}</textarea>
+                <input type="file"
+                       name="images[]"
+                       multiple
+                       class="form-input w-full">
+            </div>
 
-            <label class="flex items-center gap-2">
-                <input type="checkbox"
-                       name="is_sold"
-                       value="1"
-                    {{ $car->is_sold ? 'checked' : '' }}>
-                Mark as Sold
-            </label>
-
-            <button class="bg-blue-600 text-white px-4 py-2 rounded">
-                Update Car
+            <button class="bg-yellow-500 px-6 py-3 rounded">
+                Update Vehicle
             </button>
+
         </form>
+
+        <hr class="my-10">
+
+        <h2 class="text-xl mb-4">Current Images</h2>
+
+        <div class="grid grid-cols-4 gap-6">
+
+            @foreach($car->images as $image)
+
+                <div class="relative">
+
+                    <img src="{{ asset('storage/'.$image->image) }}"
+                         class="rounded-lg">
+
+                    <form method="POST"
+                          action="{{ route('admin.car-images.delete', $image) }}">
+
+                        @csrf
+                        @method('DELETE')
+
+                        <button class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded">
+                            Delete
+                        </button>
+
+                    </form>
+
+                </div>
+
+            @endforeach
+
+        </div>
+
     </div>
-</x-app-layout>
+
+@endsection

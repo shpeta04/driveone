@@ -19,7 +19,7 @@
 
             <h1 class="text-6xl md:text-7xl font-bold mb-6 tracking-tight fade-up"
                 style="font-family: 'Playfair Display', serif;">
-                PRECISION IN MOTION
+                PRECISION IN MOTIONnn
             </h1>
 
 

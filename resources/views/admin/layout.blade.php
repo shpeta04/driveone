@@ -87,7 +87,7 @@
             </a>
 
             {{-- Test Drives --}}
-            <a href="{{ route('admin.testdrives.index') }}"
+            <a href="#"
                class="flex items-center gap-4 px-4 py-3 rounded transition {{ active('admin.testdrives.*') }}">
 
                 <span class="text-lg">📅</span>
@@ -97,7 +97,7 @@
             </a>
 
             {{-- Contacts --}}
-            <a href="{{ route('admin.contacts.index') }}"
+            <a href="#"
                class="flex items-center gap-4 px-4 py-3 rounded transition {{ active('admin.contacts.*') }}">
 
                 <span class="text-lg">✉</span>

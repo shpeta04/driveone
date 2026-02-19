@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CarController as AdminCarController;
+use App\Http\Controllers\Admin\TestDriveController as AdminTestDriveController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestDriveController;
@@ -33,10 +34,10 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
         [AdminCarController::class, 'deleteImage']
     )->name('car-images.delete');
 
-    Route::get('testdrives', [TestDriveController::class, 'index'])
+    Route::get('testdrives', [AdminTestDriveController::class, 'index'])
         ->name('testdrives.index');
 
-    Route::delete('testdrives/{testdrive}', [TestDriveController::class, 'destroy'])
+    Route::delete('testdrives/{testdrive}', [AdminTestDriveController::class, 'destroy'])
         ->name('testdrives.destroy');
 
 });

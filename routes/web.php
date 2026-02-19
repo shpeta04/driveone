@@ -27,6 +27,12 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
     })->name('dashboard');
 
     Route::resource('cars',AdminCarController::class);
+
+    Route::delete(
+        '/admin/car-images/{image}',
+        [AdminCarController::class, 'deleteImage']
+    )->name('admin.car-images.delete');
+
 });
 
 

@@ -33,6 +33,12 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
         [AdminCarController::class, 'deleteImage']
     )->name('car-images.delete');
 
+    Route::get('testdrives', [TestDriveController::class, 'index'])
+        ->name('testdrives.index');
+
+    Route::delete('testdrives/{testdrive}', [TestDriveController::class, 'destroy'])
+        ->name('testdrives.destroy');
+
 });
 
 

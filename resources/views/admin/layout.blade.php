@@ -36,7 +36,7 @@
                 Test Drives
             </a>
 
-            <a href="{{ route('admin.contacts.index') }}"
+            <a href="#"
                class="block px-4 py-2 hover:bg-neutral-800 rounded">
                 Contacts
             </a>

@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="max-w-5xl mx-auto py-10">
+    <div class="max-w-5xl">
 
         <h1 class="text-3xl font-bold mb-8">Edit Vehicle</h1>
 
@@ -14,88 +14,85 @@
             @csrf
             @method('PUT')
 
-            <input type="text"
-                   name="title"
-                   value="{{ $car->title }}"
-                   class="form-input w-full">
 
-            <input type="text"
-                   name="brand"
-                   value="{{ $car->brand }}"
-                   class="form-input w-full">
-
-            <input type="text"
-                   name="model"
-                   value="{{ $car->model }}"
-                   class="form-input w-full">
-
-            <input type="number"
-                   name="year"
-                   value="{{ $car->year }}"
-                   class="form-input w-full">
-
-            <input type="number"
-                   name="mileage"
-                   value="{{ $car->mileage }}"
-                   class="form-input w-full">
-
-            <select name="fuel_type" class="form-input w-full">
-                <option {{ $car->fuel_type == 'petrol' ? 'selected':'' }}>petrol</option>
-                <option {{ $car->fuel_type == 'diesel' ? 'selected':'' }}>diesel</option>
-                <option {{ $car->fuel_type == 'electric' ? 'selected':'' }}>electric</option>
-                <option {{ $car->fuel_type == 'hybrid' ? 'selected':'' }}>hybrid</option>
-            </select>
-
-            <select name="transmission" class="form-input w-full">
-                <option {{ $car->transmission == 'automatic' ? 'selected':'' }}>automatic</option>
-                <option {{ $car->transmission == 'manual' ? 'selected':'' }}>manual</option>
-            </select>
-
+            {{-- Title --}}
             <div>
-                <label>Add New Images</label>
+                <label class="block text-sm text-neutral-400 mb-2">
+                    Title
+                </label>
+
+                <input type="text"
+                       name="title"
+                       value="{{ $car->title }}"
+                       class="w-full bg-neutral-950 border border-neutral-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
+            </div>
+
+
+            {{-- Brand --}}
+            <div>
+                <label class="block text-sm text-neutral-400 mb-2">
+                    Brand
+                </label>
+
+                <input type="text"
+                       name="brand"
+                       value="{{ $car->brand }}"
+                       class="w-full bg-neutral-950 border border-neutral-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
+            </div>
+
+
+            {{-- Model --}}
+            <div>
+                <label class="block text-sm text-neutral-400 mb-2">
+                    Model
+                </label>
+
+                <input type="text"
+                       name="model"
+                       value="{{ $car->model }}"
+                       class="w-full bg-neutral-950 border border-neutral-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
+            </div>
+
+
+            {{-- Images --}}
+            <div>
+
+                <label class="block text-sm text-neutral-400 mb-2">
+                    Current Images
+                </label>
+
+                <div class="flex gap-4 flex-wrap">
+
+                    @foreach($car->images as $image)
+                        <img src="{{ asset('storage/'.$image->image) }}"
+                             class="w-32 h-24 object-cover rounded-lg border border-neutral-700">
+                    @endforeach
+
+                </div>
+
+            </div>
+
+
+            {{-- Add new images --}}
+            <div>
+                <label class="block text-sm text-neutral-400 mb-2">
+                    Add New Images
+                </label>
 
                 <input type="file"
                        name="images[]"
                        multiple
-                       class="form-input w-full">
+                       class="block w-full text-sm text-neutral-400">
             </div>
 
-            <button class="bg-yellow-500 px-6 py-3 rounded">
+
+            {{-- Button --}}
+            <button type="submit"
+                    class="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold">
                 Update Vehicle
             </button>
 
         </form>
-
-        <hr class="my-10">
-
-        <h2 class="text-xl mb-4">Current Images</h2>
-
-        <div class="grid grid-cols-4 gap-6">
-
-            @foreach($car->images as $image)
-
-                <div class="relative">
-
-                    <img src="{{ asset('storage/'.$image->image) }}"
-                         class="rounded-lg">
-
-                    <form method="POST"
-                          action="{{ route('admin.car-images.delete', $image) }}">
-
-                        @csrf
-                        @method('DELETE')
-
-                        <button class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded">
-                            Delete
-                        </button>
-
-                    </form>
-
-                </div>
-
-            @endforeach
-
-        </div>
 
     </div>
 

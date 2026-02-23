@@ -2,17 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>DriveOne Admin</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="bg-black text-white">
 
-<div class="flex min-h-screen">
+<div x-data="{ sidebarOpen: false }" class="flex min-h-screen">
+
+    {{-- MOBILE OVERLAY --}}
+    <div
+        x-show="sidebarOpen"
+        @click="sidebarOpen = false"
+        class="fixed inset-0 bg-black/60 z-40 lg:hidden"
+        x-transition.opacity>
+    </div>
+
 
     {{-- SIDEBAR --}}
-    <aside class="w-64 bg-black border-r border-neutral-800 flex-shrink-0">
+    <aside
+        class="fixed lg:static inset-y-0 left-0 w-64 bg-black border-r border-neutral-800 z-50 transform transition-transform duration-300"
+        :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+    >
 
         <div class="p-6 text-xl font-bold border-b border-neutral-800">
             DRIVE<span class="text-yellow-500">ONE</span>
@@ -36,6 +51,11 @@
                 Test Drives
             </a>
 
+            <a href="{{ route('admin.users.index') }}"
+               class="block px-4 py-2 hover:bg-neutral-800 rounded">
+                Users
+            </a>
+
             <a href="#"
                class="block px-4 py-2 hover:bg-neutral-800 rounded">
                 Contacts
@@ -47,22 +67,46 @@
 
 
     {{-- MAIN CONTENT --}}
-    <main class="flex-1">
+    <div class="flex-1 flex flex-col">
 
-        {{-- TOP BAR --}}
-        <header class="border-b border-neutral-800 p-4 flex justify-end">
-            {{ auth()->user()->name }}
+        {{-- TOPBAR --}}
+        <header class="border-b border-neutral-800 p-4 flex justify-between items-center">
+
+            {{-- MOBILE MENU BUTTON --}}
+            <button
+                @click="sidebarOpen = true"
+                class="lg:hidden text-white text-2xl"
+            >
+                ☰
+            </button>
+
+            <div class="flex items-center gap-4 ml-auto">
+
+                <span class="text-neutral-400">
+                    {{ auth()->user()->name }}
+                </span>
+
+                {{-- LOGOUT --}}
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button class="text-red-400 hover:text-red-300">
+                        Logout
+                    </button>
+                </form>
+
+            </div>
+
         </header>
 
 
         {{-- PAGE CONTENT --}}
-        <div class="p-8">
+        <main class="p-4 md:p-8">
 
             @yield('content')
 
-        </div>
+        </main>
 
-    </main>
+    </div>
 
 </div>
 

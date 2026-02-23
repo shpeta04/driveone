@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CarController as AdminCarController;
 use App\Http\Controllers\Admin\TestDriveController as AdminTestDriveController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestDriveController;
@@ -22,7 +23,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/cars', [CarController::class, 'index'])->name('cars.index');
 Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
 
-Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
@@ -39,6 +40,10 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
 
     Route::delete('testdrives/{testdrive}', [AdminTestDriveController::class, 'destroy'])
         ->name('testdrives.destroy');
+
+    Route::resource('users', UserController::class)->except(['show']);
+    Route::patch('users/{user}/password', [UserController::class, 'updatePassword'])->name('users.password');
+
 
 });
 

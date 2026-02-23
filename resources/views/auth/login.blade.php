@@ -1,47 +1,111 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DriveOne Login</title>
 
-    <form method="POST" action="{{ route('login') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black flex items-center justify-center min-h-screen">
+
+<div class="w-full max-w-md bg-neutral-900 border border-neutral-800 rounded-xl p-8 shadow-2xl">
+
+    {{-- LOGO / TITLE --}}
+    <div class="text-center mb-8">
+
+        <h1 class="text-3xl font-bold tracking-widest">
+            DRIVE<span class="text-yellow-500">ONE</span>
+        </h1>
+
+        <p class="text-neutral-400 text-sm mt-2">
+            Admin Panel Login
+        </p>
+
+    </div>
+
+
+    {{-- SESSION STATUS --}}
+    @if(session('status'))
+        <div class="mb-4 text-green-400 text-sm">
+            {{ session('status') }}
+        </div>
+    @endif
+
+
+    {{-- FORM --}}
+    <form method="POST" action="{{ route('login') }}" class="space-y-5">
         @csrf
 
-        <!-- Email Address -->
+
+        {{-- EMAIL --}}
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
+            <label class="block text-sm text-neutral-300 mb-1">
+                Email
             </label>
+
+            <input type="email"
+                   name="email"
+                   value="{{ old('email') }}"
+                   required autofocus
+                   class="w-full bg-black border border-neutral-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-yellow-500">
+
+            @error('email')
+            <div class="text-red-400 text-sm mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
+
+        {{-- PASSWORD --}}
+        <div>
+            <label class="block text-sm text-neutral-300 mb-1">
+                Password
+            </label>
+
+            <input type="password"
+                   name="password"
+                   required
+                   class="w-full bg-black border border-neutral-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-yellow-500">
+
+            @error('password')
+            <div class="text-red-400 text-sm mt-1">{{ $message }}</div>
+            @enderror
+        </div>
+
+
+        {{-- REMEMBER --}}
+        <div class="flex items-center justify-between text-sm">
+
+            <label class="flex items-center gap-2 text-neutral-400">
+                <input type="checkbox" name="remember" class="accent-yellow-500">
+                Remember me
+            </label>
+
+            @if(Route::has('password.request'))
+                <a href="{{ route('password.request') }}"
+                   class="text-yellow-500 hover:text-yellow-400">
+                    Forgot password?
                 </a>
             @endif
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
         </div>
+
+
+        {{-- LOGIN BUTTON --}}
+        <button type="submit"
+                class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded-lg transition">
+            Login
+        </button>
+
     </form>
-</x-guest-layout>
+
+
+    {{-- FOOTER --}}
+    <div class="text-center text-neutral-500 text-xs mt-6">
+        © {{ date('Y') }} DriveOne. All rights reserved.
+    </div>
+
+</div>
+
+</body>
+</html>
